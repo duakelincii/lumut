@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -36,31 +37,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        Post::create($data);
-        return redirect(route('home'));
+        $data = $request->except('_token');
+        DB::table('post')->insert($data);
+        $pesan = "Data Berhasil Diinput";
+        return redirect(route('post'))->with('pesan', $pesan);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $data = Post::findOrFail($id);
+        return view('post.edit', compact('data'));
     }
 
     /**
@@ -70,9 +56,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $data = $request->except('_token');
+        Post::where('idpost', $request->idpost)->update($data);
+        $pesan = "Data Berhasil Di Update";
+        return redirect(route('post'))->with('pesan', $pesan);
     }
 
     /**
@@ -83,6 +72,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('post')->where('idpost', $id)->delete();
+        $pesan = "Data Berhasil Di Hapus";
+        return redirect(route('post'))->with('error', $pesan);
     }
 }

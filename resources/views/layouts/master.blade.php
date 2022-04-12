@@ -10,21 +10,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('assets/css/bootstrap.css') }}">
 
+    <link rel="stylesheet" href="{{ URL::asset('assets/vendors/jquery-datatables/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ URL::asset('assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css') }}">
+
     <link rel="stylesheet" href="{{ URL::asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('assets/css/app.css') }}">
     <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.svg') }}" type="image/x-icon">
 </head>
-<style>
-    table.dataTable td {
-        padding: 15px 8px;
-    }
 
-    .fontawesome-icons .the-icon svg {
-        font-size: 24px;
-    }
-
-</style>
 
 <body>
     <div id="app">
@@ -45,7 +40,7 @@
                         <li class="sidebar-title">Menu</li>
 
                         <li class="sidebar-item  ">
-                            <a href="index.html" class='sidebar-link'>
+                            <a href="{{ route('home') }}" class='sidebar-link'>
                                 <i class="bi bi-grid-fill"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -162,6 +157,13 @@
             </header>
             <div id="main-content">
 
+                @if (session()->has('pesan'))
+                    <div class="alert alert-success"> {{ session()->get('pesan') }} </div>
+                @endif
+                @if (session()->has('error'))
+                    <div class="alert alert-success"> {{ session()->get('error') }} </div>
+                @endif
+
                 <div class="page-heading">
                     @yield('content')
                 </div>
@@ -172,7 +174,8 @@
                             <p>2022 &copy; Alam</p>
                         </div>
                         <div class="float-end">
-                            <p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></p>
+                            <p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i>
+                            </p>
                         </div>
                     </div>
                 </footer>

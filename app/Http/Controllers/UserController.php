@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -13,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return view('user.index', compact('users'));
     }
 
     /**
@@ -23,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.create');
     }
 
     /**
@@ -34,29 +37,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->except('_token');
+        DB::table('users')->insert($data);
+        $pesan = "Data Berhasil Diinput";
+        return redirect(route('user'))->with('pesan', $pesan);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $data = User::findOrFail($id);
+        return view('user.edit', compact('data'));
     }
 
     /**
@@ -66,9 +57,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $data = $request->except('_token');
+        User::where('id', $request->id)->update($data);
+        $pesan = "Data Berhasil Di Update";
+        return redirect(route('user'))->with('pesan', $pesan);
     }
 
     /**
@@ -79,6 +73,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        $pesan = "Data Berhasil Di Hapus";
+        return redirect(route('user'))->with('pesan', $pesan);
     }
 }
