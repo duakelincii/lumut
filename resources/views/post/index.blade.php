@@ -3,7 +3,7 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                Jquery Datatable
+                Data Post
             </div>
             <div class="card-body">
                 <table class="table" id="table1">
